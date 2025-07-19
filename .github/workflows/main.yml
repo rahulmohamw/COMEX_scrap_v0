@@ -2,7 +2,7 @@ name: Daily COMEX Copper Scraper
 
 on:
   schedule:
-    - cron: '45 1 * * *'  # Runs daily at 06:45 AM IST (01:45 UTC)
+    - cron: '45 1 * * *'  # 06:45 AM IST
   workflow_dispatch:
 
 jobs:
@@ -16,7 +16,8 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: 3.10
+          # Use a valid version — e.g. 3.10, 3.11, or 3.12
+          python-version: '3.10'
 
       - name: Install dependencies
         run: pip install -r requirements.txt
