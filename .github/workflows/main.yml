@@ -2,7 +2,7 @@ name: Daily COMEX Copper Scraper
 
 on:
   schedule:
-    - cron: '45 1 * * *'  # 06:45 AM IST
+    - cron: '15 1 * * *'  # 06:45 AM IST
   workflow_dispatch:
 
 jobs:
