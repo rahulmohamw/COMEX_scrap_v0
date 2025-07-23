@@ -2,33 +2,40 @@ name: Daily COMEX Copper Scraper
 
 on:
   schedule:
-    - cron: '25 1 * * *'  # 06:45 AM IST
-  workflow_dispatch:
+    - cron: '25 1 * * *'  # 06:55 AM IST (cron uses UTC)
+  workflow_dispatch:      # Allows manual triggering
 
 jobs:
   update:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
+      - name: 🧾 Log time of workflow execution
+        run: echo "Workflow triggered at $(date -u) UTC"
+
+      - name: 📦 Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up Python
+      - name: 🐍 Set up Python
         uses: actions/setup-python@v5
         with:
-          # Use a valid version — e.g. 3.10, 3.11, or 3.12
           python-version: '3.10'
 
-      - name: Install dependencies
-        run: pip install -r requirements.txt
-
-      - name: Run scraper
-        run: python scraper.py
-
-      - name: Commit and push CSV
+      - name: 📥 Install dependencies
         run: |
+          echo "Installing dependencies from requirements.txt..."
+          pip install -r requirements.txt
+
+      - name: 🚀 Run scraper script
+        run: |
+          echo "Running scraper..."
+          python scraper.py
+
+      - name: 💾 Commit and push updated CSV
+        run: |
+          echo "Committing and pushing the updated CSV..."
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
-          git add comex_copper_historical_data.csv
-          git commit -m "Auto-update COMEX copper CSV"
-          git push
+          git add comex_copper_historical_data.csv || echo "Nothing to add"
+          git commit -m "Auto-update COMEX copper CSV" || echo "Nothing to commit"
+          git push || echo "Nothing to push"
